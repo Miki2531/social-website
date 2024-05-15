@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.db.models.signals import post_save
+from django.contrib.auth import get_user_model
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 
@@ -21,3 +22,28 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+
+class Contact(models.Model):
+    user_form = models.ForeignKey('auth.User', 
+                                  related_name='rel_form_set',
+                                    on_delete=models.CASCADE)
+    user_to = models.ForeignKey('auth.User', related_name='rel_to_set',
+                                on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['-created']),
+        ]
+
+        ordering = ['-created']
+
+    def __str__(self) -> str:
+        return f"{self.user_form} follows {self.user_to}"
+    
+user_model = get_user_model()
+user_model.add_to_class('following', models.ManyToManyField('self', 
+                                                            through=Contact,
+                                                            related_name='followers',
+                                                            symmetrical=False))

@@ -6,6 +6,7 @@
     <h1>Edit your profile</h1>
     <p>You can edit your profile using this form:</p>
     <form  method="post", enctype="multipart/form-data">
+        {% csrf_token %}
         {{ user_form.as_p }}
         {{ profile_form.as_p }}
         <p><input type="submit" value="save changes"/></p>
