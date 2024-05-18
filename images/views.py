@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
+from actions.utils import create_action
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponse
 from django.contrib import messages
@@ -19,6 +20,7 @@ def image_create(request):
 
             new_image.user = request.user
             new_image.save()
+            create_action(request.user, 'Bookmarked image', new_image)
             
             messages.success(request, 'Image added successfuly.')
 
@@ -47,6 +49,7 @@ def image_like(request):
             image = Image.objects.get(id=image_id)
             if action == 'like':
                 image.user_likes.add(request.user)
+                create_action(request.user, 'likes', image)
             else:
                 image.user_likes.remove(request.user)
             return JsonResponse({'status': 'ok'})

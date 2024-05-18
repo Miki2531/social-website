@@ -12,6 +12,8 @@ from .forms import (
      )
 from .models import Profile, Contact
 from django.contrib import messages
+from actions.utils import create_action
+from actions.models import Action
 
 
 def user_login(request):
@@ -45,7 +47,14 @@ def user_logout(request):
 
 @login_required
 def dashboard(request):
-     return render(request, 'account/dashboard.html', {'section': 'dashboard'})
+     actions = Action.objects.exclude(user=request.user)
+     following_ids = request.user.following.values_list('id', flat=True)
+
+     if following_ids:
+          actions = actions.filter(user_id__in=following_ids)
+     actions = actions.select_related('user', 'user__profile').prefetch_related('target')[:10]
+     return render(request, 'account/dashboard.html',
+                   {'section': 'dashboard', 'actions': actions})
 
 
 def register(request):
@@ -61,6 +70,7 @@ def register(request):
 
                if not hasattr(new_user, 'profile'):
                     Profile.objects.create(user=new_user)
+                    create_action(new_user, 'has created an account')
                return render(request, 'account/register_done.html', {'new_user': new_user})
     else:
          user_form = UserRegistrationForm()
@@ -122,8 +132,8 @@ def user_follow(request):
                if action == 'follow':
                     Contact.objects.get_or_create(
                          user_form = request.user,
-                         user_to = user
-                    )
+                         user_to = user)
+                    create_action(request.user, 'is following', user)
                else:
                     Contact.objects.filter(
                          user_form = request.user,
