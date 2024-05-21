@@ -1,7 +1,7 @@
 {% load thumbnail %}
 
 {% with user=action.user profile=action.user.profile %}
-<div class="action">
+ <div class="action">
     <div class="images">
         {% if profile.photo %}
             {% thumbnail user.profile.photo "80x80" crop="100%" as im %}
@@ -12,7 +12,7 @@
         {% if action.target %}
             {% with target=action.target %}
                 {% if target.image %}
-                    {% thumbnail target.image "80x80" crop="180"% as im %}
+                    {% thumbnail target.image "80x80" crop="100%" as im %}
                     <a href="{{ target.get_absolute_url }}">
                         <img src="{{im.url}}" class="item-img"/>
                     </a>
@@ -39,5 +39,5 @@
         </p>
             
     </div>
-</div>
+ </div>
 {% endwith %}

@@ -5,8 +5,8 @@
 
 {% block content %}
     <h1>{{user.get_full_name}}</h1>
-    <div>
-        <img src="{% thumbnail user.profile.photo 180x180 %}" class="user-detail">
+    <div class="profile-info">
+        <img src="{% thumbnail user.profile.photo 180x180 %}" class="user-detail" alt="user-profile"/>
     </div>
     {% with total_followers=user.followers.count %}
       <span class="count">
@@ -29,14 +29,15 @@
 
 
 {% block domready %}
-  var const = '{% url 'user_follow' %}';
+  const url = '{% url "user_follow" %}';
   var options = {
     method: 'POST',
     headers: {'X-CSRFToken': csrftoken},
     mode: 'same-origin'
   }
 
-  document.querySelector('a.follow').addEventListener('click', function(e) {
+  document.querySelector('a.follow')
+       .addEventListener('click', function(e) {
     e.preventDefault();
     var followButton = this;
 
@@ -59,9 +60,9 @@
           followButton.innerHTML = action;
 
           //update follower count
-          var followerCount = document.querySelector('span.count.total)
-          var totalFollowwers = parseInt(followerCount.innerHTML)
-          followerCount.innerHTML = previousAction === 'follow' ? totalFollowwers + 1 : totalFollowwers - 1;
+          var followerCount = document.querySelector('span.count .total')
+          var totalFollowers = parseInt(followerCount.innerHTML)
+          followerCount.innerHTML = previousAction === 'follow' ? totalFollowers + 1 : totalFollowers - 1;
 
         }
     })
