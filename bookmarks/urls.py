@@ -9,6 +9,7 @@ urlpatterns = [
     path('social-auth/', include('social_django.urls'), name='social'),
     path('images/', include('images.urls', namespace='images')),
     path('actions/', include('actions.urls', namespace='actions')),
+    path('__debug__/', include('debug_toolbar.urls')),
 ]
 
 
