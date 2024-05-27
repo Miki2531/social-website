@@ -2,6 +2,8 @@
 
 This documentation outlines the steps and components involved in creating a social applications with various functionalites such us user authentication, image bookmarking, following/unfollowing users, liking/unliking images, and viewing the most popular images based on Redis views. This project is built using Django and incorporates several advanced features and third-party integrations.
 
+![Imge](<Screenshot 2024-05-27 181349.png>)
+
 
 ## Project Features
 ## User Authentication and Profile Management
