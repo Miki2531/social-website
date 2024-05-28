@@ -10,6 +10,18 @@ jobs:
   build:
 
     runs-on: windows-latest
+<<<<<<< HEAD
+=======
+    
+    env:
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      FACEBOOK_KEY: ${{ secrets.FACEBOOK_KEY }}
+      FACEBOOK_SECRET: ${{ secrets.FACEBOOK_SECRET }}
+      TWITTER_KEY: ${{ secrets.TWITTER_KEY }}
+      TWITTER_SECRET: ${{ secrets.TWITTER_SECRET }}
+      GOOGLE_OAUTH2_KEY: ${{ secrets.GOOGLE_OAUTH2_KEY }}
+      GOOGLE_OAUTH2_SECRET: ${{ secrets.GOOGLE_OAUTH2_SECRET }}
+>>>>>>> be6bea7413bf59ac495707d928caaa0b0d43667d
 
     steps:
     - uses: actions/checkout@v4
